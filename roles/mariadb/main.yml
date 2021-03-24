@@ -2,7 +2,7 @@
 - name: install mariadb key
   ansible.builtin.rpm_key:
   state: present
-  key: hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+  key: https://mariadb.org/mariadb_release_signing_key.asc
 
 - name: install latest mariadb
   package: name={{ item }} state=presentgit 

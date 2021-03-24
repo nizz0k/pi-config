@@ -1,6 +1,30 @@
 ---
-- name: install ondrej/php repository
-  apt_repository: repo='ppa:ondrej/php' state=present update_cache=yes
+- name: install php prereqs
+  apt: 
+     name:
+     - lsb-release 
+     - apt-transport-https 
+     - ca-certificates 
+
+- name: Add Ondrej Sury's apt key (Debian).
+  apt_key:
+    url: https://packages.sury.org/php/apt.gpg
+    id: 15058500A0235D97F5D10063B188E2B695BD4743
+    state: present
+
+- name: Add Ondrej Sury's repo (Debian).
+  apt_repository:
+    repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
+    state: present
+  register: php_ondrej_debian_repo
+
+- name: Update apt caches after repo is added (Debian).
+  apt: update_cache=true
+  when:
+    - php_ondrej_debian_repo.changed
+    - ansible_distribution == "Debian"
+
+
 
 - name: install php7.4 with all modules
   package: name={{ item }} state=present

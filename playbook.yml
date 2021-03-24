@@ -1,6 +1,7 @@
 ---
 - hosts: pi
   gather_facts: true
+  become: true
   tasks:
   - name: update and upgrade system packages
     apt:
