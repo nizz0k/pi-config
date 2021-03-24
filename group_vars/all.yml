@@ -1,0 +1,20 @@
+---
+# mariadb role variables
+
+mysql_root_pass: Ceel0k@nth1
+drupal_db_user: drupal-data
+drupal_db_name: drupal-user
+drupal_db_pass: C0rrectH0rse1
+
+
+# PHP Variables
+date_timezone: Europe/Berlin
+memory_limit: 512M  # Modify according to available memory on your instance
+
+# Drupal Variables
+
+drupal_version: 8.5.3
+drupal_site_path: "/var/www/drupal-test"
+drupal_site_name: "Nicks Drupal Site"
+drupal_admin_username: admin
+drupal_admin_pass: C0rrectH0rse1

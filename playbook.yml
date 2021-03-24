@@ -1,0 +1,14 @@
+---
+- hosts: pi
+  gather_facts: true
+  tasks:
+  - name: update and upgrade system packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+
+  roles:
+    - mariadb
+    - php
+    - drupal
+  
