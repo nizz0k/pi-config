@@ -1,26 +1,18 @@
 ---
-- name: install mariadb key
-  ansible.builtin.rpm_key:
-  state: present
-  key: https://mariadb.org/mariadb_release_signing_key.asc
-
 - name: install latest mariadb
-  package: name={{ item }} state=presentgit 
-  with_items:
-    - mariadb-server
-    - libmysqlclient-dev
-    - gcc
-    - python3-dev
+  apt:
+    name: 
+      - mariadb-server
+      - gcc
+      - python3-dev
 
 - name: install the latest pip
   shell: curl https://bootstrap.pypa.io/get-pip.py | python3 warn=False
 
 - name: install python MySQL client
-  pip:
-    name:
-      - setuptools
-      - mysqlclient
-    state: latest
+  apt: 
+    name: python3-mysqldb
+
 
 - name: configure mariadb to bind to all addresses
   lineinfile:
@@ -33,11 +25,12 @@
     - restart mariadb
 
 - name: update mysql root password for all root accounts
-  mysql_user: name=root host={{ item }} password={{ mysql_root_pass }}
+  mysql_user: name=root host={{ item }} password={{ mysql_root_pass }} login_unix_socket=/var/run/mysqld/mysqld.sock
   with_items:
    - 127.0.0.1
    - ::1
-   - localhost
+  become: true
+
 - name: copy .my.cnf file with root password credentials
   template:
     src: my.cnf
